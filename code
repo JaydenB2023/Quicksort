@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+//create an array that contains {2,7,5,3,4,1,8,6}
+//print the unsorted array to an outfile, throw a few newlines in
+//implement a recursive version of quicksort, and sort the array in ascending order
+//use the right most element as the pivot
+//print a few new lines and print the sorted array to the outfile
+
+//thing to consider
+//print out the state of the array
+//need a quicksort function
+//need a partition function
+//need a print function
+//partition function rearranges the array and returns the partition point to the quicksort function
+
+//create outfile
+ofstream outFile("output.txt");
+
+//swap two elements
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+//partition function
+int partition(int arr[], int left, int right)
+{
+	int pivot = arr[right];
+	int i = left - 1;
+	for (int j = left; j < right; j++)
+	{
+		if (arr[j] <= pivot)
+		{
+			i++;
+			swap(arr[i], arr[j]);
+		}
+	}
+	swap(arr[i + 1], arr[right]);
+	return i + 1;
+}
+
+//quicksort function
+//print the array before and after each recursive call
+//quicksort one element at a time
+void quicksort(int arr[], int left, int right)
+{
+	//print array before
+	for (int i = 0; i < 8; i++)
+	{
+		outFile << arr[i] << " ";
+		
+	}
+	outFile << endl;
+	if (left < right)
+	{
+		int pivot = partition(arr, left, right);
+		quicksort(arr, left, pivot - 1);
+		quicksort(arr, pivot + 1, right);
+	}
+}
+
+//print function
+void printArray(vector<int>& array, ofstream& outFile)
+{
+	for (int i = 0; i < array.size(); i++)
+	{
+		outFile << array[i] << " ";
+	}
+	outFile << endl;
+}
+
+
+int main()
+{
+	//create array
+	vector<int> array = { 2,7,5,3,4,1,8,6 };
+	//print unsorted array
+	outFile << "Unsorted Array: ";
+	printArray(array, outFile);
+	outFile << endl;
+	//sort array
+	quicksort(&array[0], 0, array.size() - 1);
+	//print sorted array
+	outFile << "Sorted Array: ";
+	printArray(array, outFile);
+	outFile << endl;
+	return 0;
+}
+
